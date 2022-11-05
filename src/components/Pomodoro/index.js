@@ -18,41 +18,51 @@ function Pomodoro({ time }) {
 
     const [state, dispatch] = useStore();
     const { currentTheme } = state;
+    console.log(isNext);
 
     const handleChangeThemePomo = () => {
-        dispatch(actions.setTheme('pomo'));
-        setSecond(0);
         if (start === true) {
             // eslint-disable-next-line no-restricted-globals
             if (confirm('The timer is still running, are you sure you want to switch?') === true) {
                 setSecond(0);
                 clearInterval(timer.current);
                 setStart(false);
+                dispatch(actions.setTheme('pomo'));
+                setSecond(0);
             }
+        } else if (start === false) {
+            dispatch(actions.setTheme('pomo'));
+            setSecond(0);
         }
     };
     const handleChangeThemeShort = () => {
-        dispatch(actions.setTheme('short'));
-        setSecond(0);
         if (start === true) {
             // eslint-disable-next-line no-restricted-globals
             if (confirm('The timer is still running, are you sure you want to switch?') === true) {
                 setSecond(0);
                 clearInterval(timer.current);
                 setStart(false);
+                dispatch(actions.setTheme('short'));
+                setSecond(0);
             }
+        } else if (start === false) {
+            dispatch(actions.setTheme('short'));
+            setSecond(0);
         }
     };
     const handleChangeThemeLong = () => {
-        dispatch(actions.setTheme('long'));
-        setSecond(0);
         if (start === true) {
             // eslint-disable-next-line no-restricted-globals
             if (confirm('The timer is still running, are you sure you want to switch?') === true) {
                 setSecond(0);
                 clearInterval(timer.current);
                 setStart(false);
+                dispatch(actions.setTheme('long'));
+                setSecond(0);
             }
+        } else if (start === false) {
+            dispatch(actions.setTheme('long'));
+            setSecond(0);
         }
     };
 
@@ -71,9 +81,6 @@ function Pomodoro({ time }) {
     };
 
     const handleClickNext = () => {
-        clearInterval(timer.current);
-        setStart(false);
-        setIsNext(true);
         if (
             // eslint-disable-next-line no-restricted-globals
             confirm(
@@ -90,6 +97,11 @@ function Pomodoro({ time }) {
                 dispatch(actions.setTheme('pomo'));
             }
             setSecond(0);
+            clearInterval(timer.current);
+            setStart(false);
+            setIsNext(true);
+        } else {
+            setIsNext(false);
         }
     };
 
@@ -104,8 +116,7 @@ function Pomodoro({ time }) {
             clearInterval(timer.current);
             setSecond(0);
             setMinutes(time);
-            console.log(isNext);
-            if (isNext === false) {
+            if (isNext === false && start === true) {
                 if (currentTheme === 'pomo') {
                     dispatch(actions.setTheme('short'));
                 } else if (currentTheme === 'short') {
@@ -121,6 +132,7 @@ function Pomodoro({ time }) {
 
     useEffect(() => {
         setMinutes(time);
+        setIsNext(false);
     }, [time]);
 
     return (
