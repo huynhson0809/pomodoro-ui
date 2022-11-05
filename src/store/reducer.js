@@ -1,4 +1,4 @@
-import { SET_TODO_INPUT, SET_THEME, SET_EST_INPUT, ADD_TODO, SET_CURRENT_TIME } from './constants';
+import { SET_TODO_INPUT, SET_THEME, SET_EST_INPUT, ADD_TODO, SET_CURRENT_TIME, SET_VALUE_NOTE } from './constants';
 const initState = {
     todos: [
         { active1: true, id: 1, title: 'Listen to music', numAct: 0, estPomo: 1, note: '', project: {}, taskDone: 0 },
@@ -28,12 +28,10 @@ const initState = {
     note: '',
     project: '',
     numAct: 0,
-    themes: ['pomo', 'short', 'long'],
     currentTheme: 'pomo',
-    pomodoro: 25,
+    pomodoro: 1,
     shorBreak: 5,
     longBreak: 15,
-    currentTime: 25,
     //blog:
     blogs: [
         { id: 1, Heading: 'h1', headContent: 'An online Pomodoro Timer to boost your productivity' },
@@ -99,7 +97,7 @@ function reducer(state, action) {
                     {
                         id: Math.floor(Math.random() * 1001),
                         numAct: 0,
-                        note: '',
+                        note: action.payload.note,
                         project: '',
                         title: action.payload.todoInput,
                         estPomo: action.payload.estPomodo,
@@ -110,6 +108,11 @@ function reducer(state, action) {
             return {
                 ...state,
                 currentTime: action.payload,
+            };
+        case SET_VALUE_NOTE:
+            return {
+                ...state,
+                note: action.payload,
             };
         default:
             throw new Error('Invalid action');

@@ -12,6 +12,9 @@ import caretUp from './caret-up.png';
 import facebook from './facebook.png';
 import twitter from './twitter.png';
 import stripe from './stripe-climate-badge.png';
+import logoRed from './logo.png';
+import logoGreen from './logo-green.png';
+import logoBlue from './logo-blue.png';
 const images = {
     iconLogo: iconLogo,
     graph: graph,
@@ -27,6 +30,9 @@ const images = {
     facebook: facebook,
     twitter: twitter,
     stripe: stripe,
+    logoRed: logoRed,
+    logoGreen: logoGreen,
+    logoBlue: logoBlue,
 };
 
 export default images;

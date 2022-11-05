@@ -13,6 +13,8 @@ import { actions } from '~/store';
 import styles from './Header.module.scss';
 
 import Menu from '~/components/Popper/Menu';
+import AddTask from '~/components/AddTask';
+import Pomodoro from '~/components/Pomodoro';
 
 const cx = classNames.bind(styles);
 
@@ -33,8 +35,7 @@ const actionMenu = [
 function Header() {
     const [showReport, setShowReport] = useState(false);
     const [showSetting, setShowSetting] = useState(false);
-    const [start, setStart] = useState(false);
-    const [isRun, setIsRun] = useState(false);
+
     const [showAddTodo, setShowAddTodo] = useState(false);
     const [estPomodo, setEstPomodo] = useState(1);
 
@@ -43,107 +44,33 @@ function Header() {
 
     const handleShowReport = () => setShowReport(true);
     const handleShowSetting = () => setShowSetting(true);
+
     const currentUser = true;
     const inputRef = useRef();
 
     const [state, dispatch] = useStore();
-    const {
-        todos,
-        todoInput,
-        estPomo,
-        note,
-        project,
-        themes,
-        currentTheme,
-        pomodoro,
-        shorBreak,
-        longBreak,
-        currentTime,
-    } = state;
+    const { todos, todoInput, estPomo, note, project, currentTheme, pomodoro, shorBreak, longBreak } = state;
 
     const classes = cx('wrapper', {
         [currentTheme]: currentTheme,
     });
 
-    const handleChangeThemePomo = () => {
-        dispatch(actions.setTheme('pomo'));
-        dispatch(actions.setCurrentTime(25));
-    };
-    const handleChangeThemeShort = () => {
-        dispatch(actions.setTheme('short'));
-        dispatch(actions.setCurrentTime(5));
-    };
-    const handleChangeThemeLong = () => {
-        dispatch(actions.setTheme('long'));
-        dispatch(actions.setCurrentTime(15));
-    };
-
-    const handleChangeInput = (value) => {
-        dispatch(actions.setTodoInput(value));
-    };
-
-    const handleChangeEst = (value) => {
-        dispatch(actions.setEstInput(value));
-    };
-
     const handleSaveTodo = () => {
         if (!todoInput) {
             return;
         }
-        dispatch(actions.saveAddTodo({ todoInput, estPomodo }));
+        dispatch(actions.saveAddTodo({ todoInput, estPomodo, note }));
         dispatch(actions.setTodoInput(''));
+        dispatch(actions.setValueNote(''));
         setEstPomodo(1);
         dispatch(actions.setEstInput(1));
         inputRef.current.focus();
-    };
-
-    const handleUpEst = () => {
-        if (estPomodo >= 1) {
-            setEstPomodo(estPomodo + 1);
-        } else if (estPomodo < 1) {
-            setEstPomodo(estPomodo + 0.1);
-        }
-        handleChangeEst(estPomodo);
-    };
-
-    const handleDownEst = () => {
-        if (estPomodo > 1) {
-            setEstPomodo(estPomodo - 1);
-        } else if (estPomodo <= 1 && estPomodo >= 0.1) setEstPomodo(estPomodo - 0.1);
-        if (estPomodo > 0 && estPomodo < 0.2) setEstPomodo(0);
-        handleChangeEst(estPomodo);
-    };
-
-    const Completionist = () => <span>You are good to go!</span>;
-    // Renderer callback with condition
-    const renderer = ({ hours, minutes, seconds, completed }) => {
-        if (completed) {
-            // Render a completed state
-            return <Completionist />;
-        } else {
-            // Render a countdown
-            return (
-                <span>
-                    {minutes > 9 ? minutes : '0' + minutes}:{seconds > 9 ? seconds : '0' + seconds}
-                </span>
-            );
-        }
     };
 
     useEffect(() => {
         console.log(todoInput);
         console.log(estPomo);
     });
-
-    //timer
-    // let endTime = new Date().getTime();
-    // if (start) {
-    //     endTime = +60000 * 25; // 2 minutes
-    // }
-    // const [timeLeft, setEndTime] = useCountdown(endTime);
-
-    // const minutes = Math.floor(timeLeft / 60000) % 60;
-    // const seconds = Math.floor(timeLeft / 1000) % 60;
 
     //add todo
     const handleClickAddTodo = () => {
@@ -206,60 +133,12 @@ function Header() {
                     </span>
                 </div>
                 <div className={cx('content')}>
-                    <div className={cx('pomodoro')}>
-                        <div className={cx('pomo-main')}>
-                            <div className={cx('status')}>
-                                <Button className={cx('active1')} primary onClick={handleChangeThemePomo}>
-                                    Pomodoro
-                                </Button>
-                                <Button className={cx('active2')} primary onClick={handleChangeThemeShort}>
-                                    Short break
-                                </Button>
-                                <Button className={cx('active3')} primary onClick={handleChangeThemeLong}>
-                                    Long break
-                                </Button>
-                            </div>
-                            <div className={cx('timer')}>
-                                {/* {start === false && isRun === false ? (
-                                    '25:00'
-                                ) : (
-                                    <span>
-                                        {minutes > 9 ? minutes : '0' + minutes}:{seconds > 9 ? seconds : '0' + seconds}
-                                    </span>
-                                )} */}
-                                <Countdown date={Date.now() + 60000 * currentTime} renderer={renderer} autoStart={true}>
-                                    <Completionist />
-                                </Countdown>
-                            </div>
-                            <div className={cx('start')}>
-                                {start === false ? (
-                                    <Button
-                                        className={cx('btn-start')}
-                                        large
-                                        onClick={() => {
-                                            setStart(true);
-                                            setIsRun(true);
-                                        }}
-                                    >
-                                        START
-                                    </Button>
-                                ) : (
-                                    <>
-                                        <Button className={cx('btn-stop')} large onClick={() => setStart(false)}>
-                                            STOP
-                                        </Button>
-                                        <div class={cx('btn-next')}>
-                                            <button class={cx('btn-icon-next')}>
-                                                <img src={images.next} />
-                                            </button>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                        <div className={cx('num-task')}>#0</div>
-                        <div className={cx('name-task')}>Listen to music</div>
-                    </div>
+                    {/* pomodoro */}
+                    {currentTheme === 'pomo' ? (
+                        <Pomodoro time={pomodoro} />
+                    ) : (
+                        <Pomodoro time={currentTheme === 'short' ? shorBreak : longBreak} />
+                    )}
                     <div className={cx('add-task')}>
                         <div className={cx('heading')}>
                             <span className={cx('heading-task')}>Tasks</span>
@@ -299,40 +178,7 @@ function Header() {
                             </div>
                         ) : (
                             <div className={cx('add-todo-input')}>
-                                <div className={cx('add-todo-heading')}>
-                                    <div className={cx('input')}>
-                                        <input
-                                            ref={inputRef}
-                                            value={todoInput}
-                                            placeholder="What are you working on?"
-                                            onChange={(e) => handleChangeInput(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className={cx('est-pomo')}>
-                                        <div className={cx('est-title')}>Est pomodoros</div>
-                                        <div className={cx('est-input')}>
-                                            <input
-                                                id="input_est_pomodoro"
-                                                type="number"
-                                                min="0"
-                                                step="1"
-                                                value={estPomodo < 10 ? estPomodo.toPrecision(1) : estPomodo}
-                                            />
-                                            <Button verysmall onClick={handleUpEst}>
-                                                <img src={images.caretUp} alt="caretUp" />
-                                            </Button>
-                                            <Button verysmall onClick={handleDownEst}>
-                                                <img src={images.caretDown} alt="caretDown" />
-                                            </Button>
-                                        </div>
-                                    </div>
-                                    <div className={cx('action-note-project')}>
-                                        <Button primary>+ Add note</Button>
-                                        <Button primary rightIcon={<FontAwesomeIcon icon={faLock} />}>
-                                            + Add project
-                                        </Button>
-                                    </div>
-                                </div>
+                                <AddTask />
                                 <div className={cx('action-save-close')}>
                                     <Button
                                         primary

@@ -1,4 +1,4 @@
-import { SET_TODO_INPUT, SET_THEME, SET_EST_INPUT, ADD_TODO, SET_CURRENT_TIME } from './constants';
+import { SET_TODO_INPUT, SET_THEME, SET_EST_INPUT, ADD_TODO, SET_CURRENT_TIME, SET_VALUE_NOTE } from './constants';
 
 export const setTodoInput = (payload) => ({
     type: SET_TODO_INPUT,
@@ -22,5 +22,10 @@ export const saveAddTodo = (payload) => ({
 
 export const setCurrentTime = (payload) => ({
     type: SET_CURRENT_TIME,
+    payload,
+});
+
+export const setValueNote = (payload) => ({
+    type: SET_VALUE_NOTE,
     payload,
 });

@@ -1,0 +1,97 @@
+.pomodoro {
+    max-width: 480px;
+    margin: auto;
+}
+
+.pomo-main {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px 0px 30px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.short {
+    background-color: #4c9195;
+}
+
+.long {
+    background-color: #457ca3;
+}
+
+.status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    button {
+        border: none;
+        margin: 0px;
+        font-family: ArialRounded;
+        font-size: 1.6rem;
+        padding: 2px 16px;
+        height: 28px;
+        color: white;
+        font-weight: bold;
+        background-color: transparent;
+        &:hover {
+            background: none;
+        }
+
+        &.pomo, &.short, &.long {
+            background: none rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+    }
+}
+
+
+.timer {
+    font-size: 12rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.start {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.btn-start,
+.btn-stop {
+    font-family: ArialRounded;
+    font-size: 2.3rem;
+    height: 55px;
+    color: rgb(217, 85, 80);
+    font-weight: bold;
+    width: 200px;
+    background-color: white;
+    transition: color 0.5s ease-in-out 0s;
+}
+
+.btn-start {
+    box-shadow: rgb(235 235 235) 0px 6px 0px;
+}
+
+.btn-next {
+    position: absolute;
+    top: 20px;
+    right: 59px;
+}
+
+.btn-icon-next {
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+        opacity: 0.8;
+    }
+    img {
+        width: 22px;
+    }
+}
